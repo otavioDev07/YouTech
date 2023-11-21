@@ -12,4 +12,4 @@ def modelo():
         login = True
     else:
         login = False
-    return render_template('modelo.html', titulo=titulo, login=login)
+    return render_template('model.html', titulo=titulo, login=login)
