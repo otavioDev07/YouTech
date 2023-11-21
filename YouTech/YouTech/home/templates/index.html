@@ -1,0 +1,47 @@
+{% extends 'modelo.html' %}
+<!--BOTÃO DE LOGOFF-->
+{% block botao %}
+    {% if login %}
+        <a href="/logoff"><button class="btn btn-light btn-sm text-success p-2 me-3" type="submit">Sair</button></a>
+    {% endif %}
+{% endblock %}
+
+<!--CONTEÚDO DO SITE-->
+{% block conteudo %}
+    <div class="d-flex flex-column w-100">
+        <div>
+            <!--BANNER-->
+            <div style="padding: 0;" class="container-fluid">
+                <div style="padding: 0" id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                    <img src="../../static/img/" class="d-block w-100" alt="Slide 01">
+                    </div>
+                    <div class="carousel-item">
+                    <img src="/static/img/slides/slide02.jpg" class="d-block w-100" alt="Slide 02">
+                    </div>
+                    <div class="carousel-item">
+                    <img src="/static/img/slides/slide03.jpg" class="d-block w-100" alt="Slide 03">
+                    </div>
+                </div>
+                </div>
+            </div>  
+
+            <!--Título-->
+            <div class="container-fluid text-center my-3">
+                <h1>Venha fazer parte da nossa equipe!</h1>
+                <h4>Confira nossas oportunidades</h4>
+                <a href="#sobre"><i class="bi bi-arrow-down"></i></a>
+            </div>
+        </div>
+
+
+      <!--Quem somos-->
+        <div id="sobre" style="background-color: #00FCA8" class="container-fluid p-3 w-100">
+            <div class="container w-75 p-auto">
+
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
