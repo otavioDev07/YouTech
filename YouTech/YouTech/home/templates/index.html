@@ -9,38 +9,89 @@
 <!--CONTEÚDO DO SITE-->
 {% block conteudo %}
     <div class="d-flex flex-column w-100">
-        <div>
+        <div><!--fixar-->
             <!--BANNER-->
             <div style="padding: 0;" class="container-fluid">
                 <div style="padding: 0" id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                    <img src="../../static/img/" class="d-block w-100" alt="Slide 01">
+                    <img src="../../static/img/carousel_animado/1.gif" class="d-block w-100" alt="Slide 01">
                     </div>
                     <div class="carousel-item">
-                    <img src="/static/img/slides/slide02.jpg" class="d-block w-100" alt="Slide 02">
+                    <img src="../../static/img/carousel_animado/2.gif" class="d-block w-100" alt="Slide 02">
                     </div>
                     <div class="carousel-item">
-                    <img src="/static/img/slides/slide03.jpg" class="d-block w-100" alt="Slide 03">
+                    <img src="../../static/img/carousel_animado/3.gif" class="d-block w-100" alt="Slide 03">
                     </div>
                 </div>
                 </div>
             </div>  
 
             <!--Título-->
-            <div class="container-fluid text-center my-3">
+            <div class="container-fluid text-center my-5 py-5">
                 <h1>Venha fazer parte da nossa equipe!</h1>
                 <h4>Confira nossas oportunidades</h4>
-                <a href="#sobre"><i class="bi bi-arrow-down"></i></a>
+                <a href="#sobre"><i style="background-color: #2A494D;" class="bi bi-arrow-down mx-auto fs-2 text-light rounded-circle"></i></a>
             </div>
-        </div>
+        </div><!--fixar-->
 
 
       <!--Quem somos-->
-        <div id="sobre" style="background-color: #00FCA8" class="container-fluid p-3 w-100">
-            <div class="container w-75 p-auto">
-
+        <div id="sobre" style="background-color: #00FCA8" class="container-fluid p-5 w-100">
+            <div class="container w-75 p-auto d-flex flex-column align-items-center">
+                <h1 class="w-100 text-start">Sobre Nós</h1>
+                <hr class="w-100">
+                <p style="white-space: pre-wrap;" class="w-75">
+  Bem-vindo à YouTech, sua parceira confiável em soluções de Tecnologia da Informação para o setor comercial e industrial em todo o Brasil. Somos uma empresa especializada em consultoria, desenvolvimento e suporte de TI, dedicada a impulsionar o crescimento e a segurança de negócios por meio da inovação tecnológica. <br>
+  Na YouTech, nossa missão é oferecer uma gama completa de serviços de TI adaptados às demandas dinâmicas do mercado atual. Desde o desenvolvimento sob medida de softwares até consultorias especializadas em segurança cibernética, estamos comprometidos em fornecer soluções de ponta que elevam a eficiência, a produtividade e a confiança de nossos clientes. <br>
+  O que nos diferencia é a nossa abordagem centrada no cliente. Colocamos as necessidades e metas de cada cliente no centro de nossas estratégias, garantindo soluções personalizadas e resultados excepcionais. Nossa equipe talentosa e experiente está sempre pronta para enfrentar desafios complexos e entregar resultados que superem as expectativas. <br>
+  Na YouTech, acreditamos que a tecnologia é a chave para o sucesso nos negócios modernos. Estamos empenhados em ser seu parceiro estratégico, capacitando sua empresa com soluções inovadoras e sustentáveis para enfrentar os desafios do mundo digital. <br>
+  Junte-se a nós na jornada rumo à excelência tecnológica e ao crescimento contínuo. Na YouTech, estamos aqui para transformar desafios em oportunidades e moldar um futuro digital brilhante para sua empresa.
+                </p>
             </div>
+        </div>
+
+        <!--Por que trabalhar conosco?-->
+        <div id="porque" style="width: 100%; padding: 0; margin: 0;" class="container-fluid w-100 row">
+            <div style="background-color: #2A494D;" class="col-12 col-xl-5 text-light p-2">
+                <h1>Por Que Trabalhar Conosco?</h1> <hr>
+                <p style="white-space: pre-wrap;">
+  Oferecemos um ambiente de trabalho flexível, permitindo modalidades presenciais, híbridas ou remotas para melhor equilibrar vida pessoal e profissional. Valorizamos nossos colaboradores, oferecendo benefícios abrangentes como vale refeição e transporte, assistência médica de qualidade, e programas de apoio ao empregado, garantindo um ambiente saudável e de desenvolvimento contínuo. <br>
+  Nosso foco está no crescimento mútuo. Na YouTech, promovemos um ambiente colaborativo que estimula a inovação e o aprendizado constante. Oferecemos oportunidades de desenvolvimento e treinamento, buscando impulsionar o progresso de cada membro de nossa equipe. Aqui, você se juntará a uma equipe apaixonada por tecnologia, comprometida em enfrentar desafios com soluções inovadoras, valorizando seu potencial e reconhecendo suas contribuições. <br>
+  Se busca um lugar onde seu talento é reconhecido e valorizado, e deseja fazer parte de um ambiente estimulante que promove o crescimento pessoal e profissional, a YouTech é o lugar certo para você. Junte-se a nós nessa jornada rumo ao sucesso tecnológico enquanto investimos no seu desenvolvimento e celebramos suas conquistas.
+</p> 
+            </div>
+            <div style="background-image: url(../../static/img/imagens/portrait-smiling-woman-holding-clipboard.jpg); background-size: cover; background-position: center;" class="col-12 col-xl-7 bg-danger">
+            </div>
+        </div>
+
+        <!--Vagas disponíveis-->
+        <div id="vagas" class="container-fluid w-100 py-3">
+            {% if not vagas%}
+            <div class="text-center">
+                <h1>Infelizmente, não há vagas disponíveis no momento.</h1>
+                <p>Por favor, retorne mais tarde.</p>
+            </div>
+            {% else %}
+            <div class="text-center">
+                <h1>Vagas Disponíveis</h1>
+                <div class="container w-75 row g-4">
+                    {% for vaga in vagas %}
+                        <div class="col col-12 col-md-6 col-xl-3">
+                            <div class="card">
+                                <img src="../../static/img/img_vagas/{{vaga['img']}}" class="card-img-top" alt="{{vaga['cargo']}}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{vaga['cargo']}}</h5>
+                                    <a href="/ver_vaga">
+                                        <p class="text-right fs-6">+ Detalhes</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
     
