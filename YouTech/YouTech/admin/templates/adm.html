@@ -7,24 +7,24 @@
             <h1 class="dsplay-1 text-center">Área dos Administradores</h1>
         </div>
         {% if not vagas %}
-            <h1 class="text-center text-danger my-5">Não há vagas abertas no momento</h1>
+            <h1 style="color: #2A494D" class="text-center my-5">Não há vagas abertas no momento</h1>
         {% else %}
-            <div class="container text-center">
-                <div class="row g-3">
+            <div class="container-fluid text-center">
+                <div class="row g-2">
                     {% for vaga in vagas %}
-                    <div class="col-12 col-md-10 col-lg-6 mx-auto">
+                    <div class="col-12 col-md-10 col-xl-4 mx-auto">
 
-                        <div class="card mb-3" style="max-width: 540px;">
+                        <div class="card mb-3" style="max-width: 800px; min-width: 400px;">
                             <div class="row g-0">
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                 <img src="../../static/img/img_vagas/{{vaga['img']}}" class="img-fluid rounded-start h-100" alt="{{vaga['cargo']}}">
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                 <div class="card-body">
                                     <h5 class="card-title">{{vaga['cargo']}}</h5>
                                     <p class="card-text"><small class="text-body-secondary">{{vaga['cargo']}}</small></p>
                                     <p class="card-title fs-5">{{vaga['modalidade']}} - {{vaga['local']}}</p>
-                                    <a href="/editar/{{vaga['id']}}"><i class="bi bi-pencil-square fs-3"></i></a>
+                                    <a href="/chamar_edit/{{vaga['id']}}"><i class="bi bi-pencil-square fs-3"></i></a>
                                     <a href="/excluir/{{vaga['id']}}" class="ms-5" onclick="return confirm('Você tem certeza de que deseja remover essa vaga?')"><i class="bi bi-trash3 fs-3"></i></a>
                                 </div>
                                 </div>
@@ -33,7 +33,7 @@
                     </div>
                     {% endfor %}
                 </div>
-        {% endif %}
+            {% endif %}
             <div class="container text-center">
                 <button type="button" onclick="window.location.href='/cadvagas'" style="background-color: #2A494D;" class="btn btn-lg text-light mx-5">Cadastrar</button>
                 <button type="button" onclick="window.location.href='/logoff'" class="btn btn-lg btn-danger mx-5">Sair</button>

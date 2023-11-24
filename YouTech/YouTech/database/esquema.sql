@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS vagas (
     modalidade TEXT NOT NULL,
     local TEXT NOT NULL,
     salario REAL NOT NULL,
-    email TEXT NOT NULL
+    email TEXT NOT NULL,
+    setor TEXT NOT NULL
 );  

@@ -7,7 +7,7 @@ from session.session import session_blueprint
 from info.info_vaga import vaga_blueprint
     
 app = Flask(__name__)
-app.secret_key = 'seuzequitanda'
+app.secret_key = 'YouTech'
 #Conecta a blueprint importada no arquivo principal
 app.register_blueprint(home_blueprint)
 app.register_blueprint(admin_blueprint)

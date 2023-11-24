@@ -2,10 +2,8 @@ from flask import render_template, Blueprint, request, redirect, session
 from session.session import verifica_sessao
 from database.conexao import iniciar_db, get_db_conexao 
 import uuid, os
-from werkzeug.utils import secure_filename
+from session.session import usuario, senha
 
-usuario = 'GalerinhaDoRH'
-senha = '#4G4l3R1NH4D0RH3mU1T0l3G4l'
 admin_blueprint = Blueprint('admin', __name__, template_folder='templates')
 
 
@@ -18,10 +16,9 @@ def login():
 #Rota da validação do login
 @admin_blueprint.route('/acesso', methods=['post'])
 def valida_login():
-    global usuario, senha
     usuario_input = request.form['usuario']
     senha_input = request.form['senha']
-    if usuario_input == usuario_input and senha_input == senha:
+    if usuario_input == usuario and senha_input == senha:
         session['login'] = True
         return redirect('/adm')
     else:
@@ -60,22 +57,21 @@ def cadastro():
         local = request.form['local']
         salario = request.form['salario']
         email = request.form['email']
+        setor = request.form['setor']
         if img:
             id_img = str(uuid.uuid4().hex)
-            filename = secure_filename(img.filename)
-            novo_nome = f"{id_img}_{filename}.png"
-            caminho_imagem = os.path.join('static/img/img_vagas', novo_nome)
-            img.save(caminho_imagem)
+            filename = f"{id_img}_{cargo}.png"
+            img.save('YouTech/static/img/img_vagas/'+filename)
             iniciar_db()
             conexao = get_db_conexao()
-            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, img, modalidade, local, salario, email))
+            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor))
             conexao.commit()
             conexao.close()
         else:
-            img = 'static/img/logos/2.png'
+            filename = "padrao.png"
             iniciar_db()
             conexao = get_db_conexao()
-            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, img, modalidade, local, salario, email))
+            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor))
             conexao.commit()
             conexao.close()
         return redirect('/adm')
@@ -84,38 +80,43 @@ def cadastro():
 
 #Rota para excluir
 @admin_blueprint.route('/excluir/<id>')
-def excluir():
-    global imagem
+def excluir(id):
     if verifica_sessao():
         id = int(id)
         iniciar_db()
         conexao = get_db_conexao()
-        imagem = conexao.execute('SELECT FROM vagas WHERE id = ?', (id,)).fetchone()
-        caminho_imagem = os.path.join('static/img/img_vagas', imagem['img'])
-        os.remove(caminho_imagem)
-        conexao.execute('DELETE FROM vagas WHERE id = ?', (id,))
-        conexao.commit()
-        conexao.close()
+        try:
+            imagem = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()
+            if imagem['img'] != "padrao.png":
+                caminho_imagem = os.path.join('YouTech/static/img/img_vagas/', imagem['img'])
+                os.remove(caminho_imagem)
+            conexao.execute('DELETE FROM vagas WHERE id = ?', (id,))
+        except: 
+            conexao.execute('DELETE FROM vagas WHERE id = ?', (id,))
+        finally:
+            conexao.commit()
+            conexao.close()
         return redirect('/adm')
     else:
         return redirect('/login')
     
 #Rota para renderizar a página de edição
 @admin_blueprint.route('/chamar_edit/<id>')
-def chamar_edit():
+def chamar_edit(id):
     if verifica_sessao():
         iniciar_db()
         conexao = get_db_conexao()
         vagas = conexao.execute('SELECT * FROM vagas WHERE id = ?', (id,)).fetchall()
         conexao.close()
-        titulo = 'EDIÇÃO DE PRODUTOS'
-        return render_template('editprodutos.html', vagas=vagas, titulo=titulo)
+        titulo = 'EDIÇÃO'
+        return render_template('editar.html', vagas=vagas, titulo=titulo)
     else:
         return redirect('/login')
 
 #Rota para editar as vagas
 @admin_blueprint.route('/edit_vagas', methods=['POST'])
 def editar():
+    id = request.form['id']
     cargo = request.form['cargo']
     descricao = request.form['descricao']
     requisitos = request.form['requisitos']
@@ -124,23 +125,23 @@ def editar():
     local = request.form['local']
     salario = request.form['salario']
     email = request.form['email']
+    setor = request.form['setor']
     
     conexao = get_db_conexao()
     if img:
         id_img = str(uuid.uuid4().hex)
-        filename = secure_filename(img.filename) #Usa o nome original da imagem com o ID único gerado
-        novo_nome = f"{id_img}_{filename}.png"
-        caminho_imagem = os.path.join('static/img/produtos', novo_nome)
-        imagem_antiga = conexao.execute('SELECT img FROM produtos WHERE id = ?', (id,)).fetchone() # Remove a imagem antiga, se existir
+        filename = f"{id_img}_{cargo}.png"
+        caminho_imagem = os.path.join('YouTech/static/img/img_vagas', filename)
+        imagem_antiga = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone() # Remove a imagem antiga, se existir
         if imagem_antiga:
-            caminho_imagem_antiga = os.path.join('static/img/produtos', imagem_antiga['img'])
-            if os.path.exists(caminho_imagem_antiga):
-                os.remove(caminho_imagem_antiga)
-        img.save(caminho_imagem)
+            if imagem_antiga['img'] != 'padrao.png':
+                caminho_imagem_antiga = os.path.join('YouTech/static/img/img_vagas/', imagem_antiga['img'])
+                if os.path.exists(caminho_imagem_antiga):
+                    os.remove(caminho_imagem_antiga)
+                img.save(caminho_imagem)
     else:
-        novo_nome = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()['img'] # Se nenhuma nova imagem for enviada, mantém a imagem existente
-
-    conexao.execute('UPDATE vagas SET cargo = ?, descricao = ?, requisitos = ?, img = ?, modalidade = ?, local = ?, salario = ?, email = ?', (cargo, descricao, requisitos, novo_nome, modalidade, local, salario, email))
+        filename = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()['img'] # Se nenhuma nova imagem for enviada, mantém a imagem existente
+    conexao.execute('UPDATE vagas SET cargo = ?, descricao = ?, requisitos = ?, img = ?, modalidade = ?, local = ?, salario = ?, email = ?, setor = ?', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor))
     conexao.commit()
     conexao.close()
     return redirect('/adm')
@@ -150,7 +151,7 @@ def editar():
 def busca():
     busca = request.form['buscar']
     conexao = get_db_conexao()
-    produtos = conexao.execute('SELECT * FROM produtos WHERE nome LIKE "%" || ? || "%"', (busca,)).fetchall()
-    title = 'QUITANDA DO ZÉ'
-    return render_template('index.html', title=title, produtos=produtos) 
+    vagas = conexao.execute('SELECT * FROM vagas WHERE cargo LIKE "%" || ? || "%"', (busca,)).fetchall()
+    title = 'YOUTECH'
+    return render_template('index.html', title=title, vagas=vagas) 
 

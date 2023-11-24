@@ -1,0 +1,74 @@
+{% extends 'modelo.html' %}
+<!--BOTÃO DE LOGOFF-->
+{% block botao %}
+    {% if login %}
+        <a href="/logoff"><button class="btn btn-light btn-sm text-success p-2 me-3" type="submit">Sair</button></a>
+    {% endif %}
+{% endblock %}
+
+<!--CONTEÚDO DO SITE-->
+{% block conteudo %}
+        <div class="d-flex flex-column align-items-center w-75">
+            {% for info in vaga %}
+                <div class="w-75 rounded">
+                    <div class="w-100">
+                        <img src="{{info['img']}}" alt="{{info['cargo']}}" class="w-100">
+                    </div>
+                    <div style="background-color: #00FCA8" class="container-fluid p-1">
+                        <h1 class="text-center">{{info['cargo']}}</h1>
+                    </div>
+                    <div class="container w-75">
+                        <div class="d-flex align-items-center justify-content-between p-1">
+                            <div class="d-flex">
+                                <i class="bi bi-person-workspace pe-2"></i>
+                                <span>{{ info['modalidade'] }}</span>
+                            </div>
+                            <div class="d-flex">
+                                <i class="bi bi-currency-exchange pe-2"></i>
+                                <span>R$ {{ info['salario'] }}</span>
+                            </div>
+                            <div class="d-flex">
+                                <i class="bi bi-flag-fill pe-2"></i>
+                                <span>{{ info['local'] }}</span>
+                            </div>
+                            <div class="d-flex">
+                                <i class="bi bi-person-badge pe-2"></i>
+                                <span>{{ info['Modalidade'] }}</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div>
+                            <div class="d-flex">
+                                <h4 style="white-space: pre-wrap;"><strong>Cargo:</strong> </h4>
+                                <p>{{info['cargo']}}</p>
+                            </div>
+                            <div class="d-flex">
+                                <h4 style="white-space: pre-wrap;"><strong>Descrição:</strong></h4><br/>
+                                <p>{{info['descricao']}}</p>
+                            </div>
+                            <div class="d-flex">
+                                <h4 style="white-space: pre-wrap;"><strong>Salário:</strong> </h4>
+                                <p>{{info['salario']}}</p>
+                            </div>
+                            <div class="d-flex">
+                                <h4 style="white-space: pre-wrap;"><strong>Modalidade:</strong> </h4>
+                                <p>{{info['modalidade']}}</p>
+                            </div>
+                            <div class="d-flex">
+                                <h4 style="white-space: pre-wrap;"><strong>Setor:</strong> </h4>
+                                <p>{{info['setor']}}</p>
+                            </div>
+                            <div class="d-flex">
+                                <h4 style="white-space: pre-wrap;"><strong>Requisitos:</strong></h4><br/>
+                                <p>{{info['requisitos']}}</p>
+                            </div>
+                            <div class="d-flex">
+                                <h4 style="white-space: pre-wrap;"><strong>E-mail de contato:</strong> </h4>
+                                <p>{{info['setor']}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}

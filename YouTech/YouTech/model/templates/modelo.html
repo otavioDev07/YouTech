@@ -11,7 +11,7 @@
     <!---->
     <title>YouTech :: {{titulo}}</title>
 </head>
-<body class="d-flex flex-column wrapper">
+<body style="min-height: 100vh;" class="d-flex flex-column">
   <!--Navbar-->
   <header>
     <nav style="background-color: #2A494D;" class="navbar navbar-expand-lg shadow border-bottom border-4 border-dark border-opacity-25">
@@ -23,18 +23,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center justify-content-center">
             <li class="nav-item">
-              <a class="nav-link active fs-5 text-light mx-5" aria-current="page" href="#sobre">Sobre nós</a>
+              <a class="nav-link active fs-5 text-light mx-5" aria-current="page" href="/home#sobre">Sobre nós</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-5 text-light me-5" aria-current="page" href="#porque">Por que nós?</a>
+              <a class="nav-link fs-5 text-light me-5" aria-current="page" href="/home#porque">Por que nós?</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-5 text-light" aria-current="page" href="#vagas">Vagas</a>
+              <a class="nav-link fs-5 text-light" aria-current="page" href="/home#vagas">Vagas</a>
             </li>
           </ul>
           {% block botao %}
           {% endblock %}
-          <form class="d-flex" role="search" action="/buscar" method="POST">
+          <form class="d-flex" role="search" action="/busca" method="POST">
             <input class="form-control me-2" type="search" placeholder="Digite a vaga desejada" name="buscar" aria-label="Digite a vaga desejada">
             <button class="btn btn-danger" type="submit">Buscar</button>
           </form>
