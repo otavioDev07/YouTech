@@ -22,10 +22,10 @@ def login():
     titulo = 'LOGIN'
     return render_template('login.html', titulo=titulo)
 
-@session_blueprint.route("/logoff")
-def logoff():
-    global login
-    login = False
-    session.clear()
-    return redirect('/')
-
+# @session_blueprint.route("/logoff")
+# def logoff():
+#     global login
+#     login = False
+#     session.clear()
+#     return redirect('/')
+# ------>>> Por enquanto sem botão logoff

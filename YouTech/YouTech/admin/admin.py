@@ -61,7 +61,7 @@ def cadastro():
         if img:
             id_img = str(uuid.uuid4().hex)
             filename = f"{id_img}_{cargo}.png"
-            img.save('YouTech/static/img/img_vagas/'+filename)
+            img.save('YouTech\YouTech\static\img\img_vagas/'+filename)
             iniciar_db()
             conexao = get_db_conexao()
             conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor))
@@ -88,7 +88,7 @@ def excluir(id):
         try:
             imagem = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()
             if imagem['img'] != "padrao.png":
-                caminho_imagem = os.path.join('YouTech/static/img/img_vagas/', imagem['img'])
+                caminho_imagem = os.path.join('YouTech\YouTech\static\img\img_vagas/', imagem['img'])
                 os.remove(caminho_imagem)
             conexao.execute('DELETE FROM vagas WHERE id = ?', (id,))
         except: 
@@ -131,11 +131,11 @@ def editar():
     if img:
         id_img = str(uuid.uuid4().hex)
         filename = f"{id_img}_{cargo}.png"
-        caminho_imagem = os.path.join('YouTech/static/img/img_vagas', filename)
+        caminho_imagem = os.path.join('YouTech\YouTech\static\img\img_vagas/', filename)
         imagem_antiga = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone() # Remove a imagem antiga, se existir
         if imagem_antiga:
             if imagem_antiga['img'] != 'padrao.png':
-                caminho_imagem_antiga = os.path.join('YouTech/static/img/img_vagas/', imagem_antiga['img'])
+                caminho_imagem_antiga = os.path.join('YouTech\YouTech\static\img\img_vagas/', imagem_antiga['img'])
                 if os.path.exists(caminho_imagem_antiga):
                     os.remove(caminho_imagem_antiga)
                 img.save(caminho_imagem)
@@ -145,7 +145,7 @@ def editar():
     conexao.commit()
     conexao.close()
     return redirect('/adm')
-
+    
 #Rota de busca
 @admin_blueprint.route('/busca', methods=['post'])
 def busca():
