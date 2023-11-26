@@ -141,7 +141,7 @@ def editar():
                 img.save(caminho_imagem)
     else:
         filename = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()['img'] # Se nenhuma nova imagem for enviada, mantém a imagem existente
-    conexao.execute('UPDATE vagas SET cargo = ?, descricao = ?, requisitos = ?, img = ?, modalidade = ?, local = ?, salario = ?, email = ?, setor = ?', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor))
+    conexao.execute('UPDATE vagas SET cargo = ?, descricao = ?, requisitos = ?, img = ?, modalidade = ?, local = ?, salario = ?, email = ?, setor = ? WHERE id = ?', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, id))
     conexao.commit()
     conexao.close()
     return redirect('/adm')
