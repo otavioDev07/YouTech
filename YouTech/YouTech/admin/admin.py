@@ -133,12 +133,13 @@ def editar():
         filename = f"{id_img}_{cargo}.png"
         caminho_imagem = os.path.join('YouTech\YouTech\static\img\img_vagas/', filename)
         imagem_antiga = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone() # Remove a imagem antiga, se existir
-        if imagem_antiga:
-            if imagem_antiga['img'] != 'padrao.png':
-                caminho_imagem_antiga = os.path.join('YouTech\YouTech\static\img\img_vagas/', imagem_antiga['img'])
-                if os.path.exists(caminho_imagem_antiga):
-                    os.remove(caminho_imagem_antiga)
-                img.save(caminho_imagem)
+        if imagem_antiga['img'] != 'padrao.png':
+            caminho_imagem_antiga = os.path.join('YouTech\YouTech\static\img\img_vagas/', imagem_antiga['img'])
+            if os.path.exists(caminho_imagem_antiga):
+                os.remove(caminho_imagem_antiga)
+            img.save(caminho_imagem)
+        # else talvez ?
+                
     else:
         filename = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()['img'] # Se nenhuma nova imagem for enviada, mantém a imagem existente
     conexao.execute('UPDATE vagas SET cargo = ?, descricao = ?, requisitos = ?, img = ?, modalidade = ?, local = ?, salario = ?, email = ?, setor = ? WHERE id = ?', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, id))
