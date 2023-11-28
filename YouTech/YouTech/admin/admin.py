@@ -3,6 +3,7 @@ from session.session import verifica_sessao
 from database.conexao import iniciar_db, get_db_conexao 
 import uuid, os
 from session.session import usuario, senha
+from datetime import date
 
 admin_blueprint = Blueprint('admin', __name__, template_folder='templates')
 
@@ -58,22 +59,30 @@ def cadastro():
         salario = request.form['salario']
         email = request.form['email']
         setor = request.form['setor']
+        data = request.form['data']
+
         if img:
             id_img = str(uuid.uuid4().hex)
             filename = f"{id_img}_{cargo}.png"
-            img.save('YouTech\YouTech\static\img\img_vagas/'+filename)
+            img.save('YouTech\static\img\img_vagas/'+filename)
             iniciar_db()
             conexao = get_db_conexao()
-            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor))
+            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, data,))
             conexao.commit()
             conexao.close()
         else:
             filename = "padrao.png"
             iniciar_db()
             conexao = get_db_conexao()
-            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor))
+            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, data,))
             conexao.commit()
             conexao.close()
+
+        #Criação da pasta dos curriculos
+        caminho_curriculo = os.path.join('YouTech\static\pdf/', cargo)
+        if not os.path.exists(caminho_curriculo):
+            os.makedirs(caminho_curriculo)
+
         return redirect('/adm')
     else:
         return redirect('/login')
@@ -88,7 +97,7 @@ def excluir(id):
         try:
             imagem = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()
             if imagem['img'] != "padrao.png":
-                caminho_imagem = os.path.join('YouTech\YouTech\static\img\img_vagas/', imagem['img'])
+                caminho_imagem = os.path.join('YouTech\static\img\img_vagas/', imagem['img'])
                 os.remove(caminho_imagem)
             conexao.execute('DELETE FROM vagas WHERE id = ?', (id,))
         except: 
@@ -126,12 +135,14 @@ def editar():
     salario = request.form['salario']
     email = request.form['email']
     setor = request.form['setor']
+    data = request.form['data']
+    data = request.form['data']
     
     conexao = get_db_conexao()
     if img:
         id_img = str(uuid.uuid4().hex)
         filename = f"{id_img}_{cargo}.png"
-        caminho_imagem = os.path.join('YouTech\YouTech\static\img\img_vagas/', filename)
+        caminho_imagem = os.path.join('YouTech\static\img\img_vagas/', filename)
         imagem_antiga = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone() # Remove a imagem antiga, se existir
         if imagem_antiga['img'] != 'padrao.png':
             caminho_imagem_antiga = os.path.join('YouTech\YouTech\static\img\img_vagas/', imagem_antiga['img'])
@@ -142,7 +153,7 @@ def editar():
                 
     else:
         filename = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()['img'] # Se nenhuma nova imagem for enviada, mantém a imagem existente
-    conexao.execute('UPDATE vagas SET cargo = ?, descricao = ?, requisitos = ?, img = ?, modalidade = ?, local = ?, salario = ?, email = ?, setor = ? WHERE id = ?', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, id))
+    conexao.execute('UPDATE vagas SET cargo = ?, descricao = ?, requisitos = ?, img = ?, modalidade = ?, local = ?, salario = ?, email = ?, setor = ?, data = ? WHERE id = ?', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, data, id,))
     conexao.commit()
     conexao.close()
     return redirect('/adm')
@@ -154,5 +165,10 @@ def busca():
     conexao = get_db_conexao()
     vagas = conexao.execute('SELECT * FROM vagas WHERE cargo LIKE "%" || ? || "%"', (busca,)).fetchall()
     title = 'YOUTECH'
-    return render_template('index.html', title=title, vagas=vagas) 
+    return render_template('index.html', title=title, vagas=vagas)
+
+
+
+
+
 

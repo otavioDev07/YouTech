@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS vagas (
     local TEXT NOT NULL,
     salario REAL NOT NULL,
     email TEXT NOT NULL,
-    setor TEXT NOT NULL
+    setor TEXT NOT NULL,
+    data DATE NOT NULL
 );  

@@ -31,7 +31,7 @@
             <div class="container-fluid text-center my-5 py-5">
                 <h1>Venha fazer parte da nossa equipe!</h1>
                 <h4>Confira nossas oportunidades</h4>
-                <a href="#sobre"><i style="background-color: #2A494D;" class="bi bi-arrow-down mx-auto fs-2 text-light rounded-circle"></i></a>
+                <div class="animation"><a href="#sobre"><i style="background-color: #2A494D;" class="bi bi-arrow-down mx-auto fs-2 text-light rounded-circle"></i></a></div>
             </div>
         </div><!--fixar-->
 
@@ -66,8 +66,42 @@
         </div>
 
         <!--Vagas disponíveis-->
-        <div id="vagas" class="container-fluid w-100 py-3">
-            {% if not vagas%}
+            <div id="vagas" class="container-fluid w-100 py-3">
+                <form class="d-flex" action="/filtro" method="post" role="search">
+                    <div class="row w-50">
+                        <div class="col-12 col-md-5">
+                            <div class="input-group mb-2">
+                                <div class="form-floating">
+                                    <select name="setor" id="setor" class="d-flex align-items-center form-control">
+                                        <option value=""></option>
+                                        <option value="rh">RH</option>
+                                        <option value="marketing">Marketing</option>
+                                        <option value="desenvolvimento">Desenvolvimento</option>
+                                        <option value="cybersecurity">Cybersecurity</option>
+                                        <option value="gestao">Gestão</option>
+                                    </select>
+                                    <label for="setor">Setor do cargo</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-5">
+                            <div class="input-group mb-2">
+                                <div class="form-floating">
+                                    <select name="modalidade" id="modalidade" class="form-control">
+                                        <option value=""></option>
+                                        <option value="presencial">Presencial</option>
+                                        <option value="remoto">Remoto</option>
+                                        <option value="híbrido">Híbrido</option>
+                                    </select>
+                                    <label for="modalidade">Modalidade do cargo</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6 col-md-2 d-flex align-items-center"><button class="btn btn-danger p-2" type="submit">Filtrar <i class="bi bi-filter"></i></button></div>
+                    </div>
+                </form>
+            {% if not validos%}
             <div class="text-center">
                 <h1>Infelizmente, não há vagas disponíveis no momento.</h1>
                 <p>Por favor, retorne mais tarde.</p>
@@ -75,19 +109,19 @@
             {% else %}
             <div class="text-center">
                 <h1>Vagas Disponíveis</h1>
-                <div class="container w-75 row g-4">
-                    {% for vaga in vagas %}
-                        <div class="col col-12 col-md-6 col-xl-3">
-                            <div class="card">
-                                <img src="../../static/img/img_vagas/{{vaga['img']}}" class="card-img-top" alt="{{vaga['cargo']}}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{vaga['cargo']}}</h5>
-                                    <a href="/ver_vaga/{{vaga['id']}}">
-                                        <p class="text-right fs-6">+ Detalhes</p>
-                                    </a>
+                <div class="container w-75 row g-4 d-flex justify-content-center">
+                    {% for vaga in validos %}
+                            <div class="col col-12 col-md-6 col-xl-3">
+                                <div class="card">
+                                    <img src="../../static/img/img_vagas/{{vaga['img']}}" class="card-img-top" alt="{{vaga['cargo']}}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{vaga['cargo']}}</h5>
+                                        <a href="/ver_vaga/{{vaga['id']}}">
+                                            <p class="text-right fs-6">+ Detalhes</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                     {% endfor %}
                 </div>
             </div>

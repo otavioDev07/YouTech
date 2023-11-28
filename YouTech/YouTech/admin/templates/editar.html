@@ -52,7 +52,7 @@
 
                     <div class="col-12 col-md-7">
                         <div class="input-group m2-3">
-                            <img src="/YouTech/static/img/img_vagas/{{info['img']}}" alt="{{info['cargo']}}" style="width:60px">
+                            <img src="../../static/img/img_vagas/{{info['img']}}" alt="{{info['cargo']}}" style="width:60px;" class="rounded-start">
                             <div class="form-floating">
                                 <input type="file" name="img" id="img" class="form-control" accept="image/jpeg,image/png">
                                 <div class="invalid-feedback">Você deve enviar a foto do produto</div>
@@ -121,19 +121,19 @@
                                     <option value=""></option>
                                     <option value="presencial" selected>Presencial</option>
                                     <option value="remoto">Remoto</option>
-                                    <option value="hibrido">Híbrido</option>
+                                    <option value="híbrido">Híbrido</option>
 
                                     {% elif info['modalidade'] == 'remoto' %}
                                     <option value=""></option>
                                     <option value="presencial">Presencial</option>
                                     <option value="remoto" selected>Remoto</option>
-                                    <option value="hibrido">Híbrido</option>
+                                    <option value="híbrido">Híbrido</option>
 
-                                    {% elif info['modalidade'] == 'hibrido' %}
+                                    {% elif info['modalidade'] == 'híbrido' %}
                                     <option value=""></option>
                                     <option value="presencial">Presencial</option>
                                     <option value="remoto">Remoto</option>
-                                    <option value="hibrido" selected>Híbrido</option>
+                                    <option value="híbrido" selected>Híbrido</option>
                                     {% endif %}
                                 </select>
                                 <label for="modalidade">Modalidade do cargo</label>
@@ -141,6 +141,11 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="form-floating mb-2 d-flex justify-content-center">
+                    <input type="date" name="data" id="data" min="{{real_date}}" value="{{info['data']}}" class="form-control" required autofocus />
+                    <label for="data">Data de expiração</label>
+                    <div class="invalid-feedback">Você deve informar a data de expiração</div>
                 </div>
                 <input type="hidden" name="id" value="{{info['id']}}">
                 {% endfor %}

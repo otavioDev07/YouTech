@@ -8,12 +8,9 @@
 
 <!--CONTEÚDO DO SITE-->
 {% block conteudo %}
-        <div class="d-flex flex-column align-items-center w-75">
+        <div class="d-flex flex-column align-items-center w-75 mt-5">
             {% for info in vaga %}
                 <div class="w-75 rounded">
-                    <div class="w-100">
-                        <img src="{{info['img']}}" alt="{{info['cargo']}}" class="w-100">
-                    </div>
                     <div style="background-color: #00FCA8" class="container-fluid p-1">
                         <h1 class="text-center">{{info['cargo']}}</h1>
                     </div>
@@ -33,42 +30,78 @@
                             </div>
                             <div class="d-flex">
                                 <i class="bi bi-person-badge pe-2"></i>
-                                <span>{{ info['Modalidade'] }}</span>
+                                <span>{{ info['setor'] }}</span>
                             </div>
                         </div>
                         <hr>
                         <div>
-                            <div class="d-flex">
-                                <h4 style="white-space: pre-wrap;"><strong>Cargo:</strong> </h4>
+                            <div class="d-flex align-items-baseline">
+                                <h6 style="white-space: pre-wrap;"><strong>Cargo:</strong> </h6>
                                 <p>{{info['cargo']}}</p>
                             </div>
-                            <div class="d-flex">
-                                <h4 style="white-space: pre-wrap;"><strong>Descrição:</strong></h4><br/>
+                            <div class="d-flex flex-column justify-content-baseline">
+                                <h6 style="white-space: pre-wrap;"><strong>Descrição:</strong></h6>
                                 <p>{{info['descricao']}}</p>
                             </div>
-                            <div class="d-flex">
-                                <h4 style="white-space: pre-wrap;"><strong>Salário:</strong> </h4>
+                            <div class="d-flex align-items-baseline">
+                                <h6 style="white-space: pre-wrap;"><strong>Salário:</strong> </h6>
                                 <p>{{info['salario']}}</p>
                             </div>
-                            <div class="d-flex">
-                                <h4 style="white-space: pre-wrap;"><strong>Modalidade:</strong> </h4>
+                            <div class="d-flex align-items-baseline">
+                                <h6 style="white-space: pre-wrap;"><strong>Modalidade:</strong> </h6>
                                 <p>{{info['modalidade']}}</p>
                             </div>
-                            <div class="d-flex">
-                                <h4 style="white-space: pre-wrap;"><strong>Setor:</strong> </h4>
+                            <div class="d-flex align-items-baseline">
+                                <h6 style="white-space: pre-wrap;"><strong>Setor:</strong> </h6>
                                 <p>{{info['setor']}}</p>
                             </div>
-                            <div class="d-flex">
-                                <h4 style="white-space: pre-wrap;"><strong>Requisitos:</strong></h4><br/>
+                            <div class="d-flex flex-column justify-content-baseline">
+                                <h6 style="white-space: pre-wrap;"><strong>Requisitos:</strong></h6>
                                 <p>{{info['requisitos']}}</p>
                             </div>
-                            <div class="d-flex">
-                                <h4 style="white-space: pre-wrap;"><strong>E-mail de contato:</strong> </h4>
-                                <p>{{info['setor']}}</p>
+                            <div class="d-flex align-items-baseline">
+                                <h6 style="white-space: pre-wrap;"><strong>E-mail de contato:</strong> </h6>
+                                <p>{{info['email']}}</p>
                             </div>
+
+                            <form class="d-flex needs-validation" enctype="multipart/form-data" action="/pdf/{{info['id']}}" method="post" role="search" novalidate>
+                                <div class="row w-100">
+                                    <div class="col-12 col-md-8">
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text"><i class="bi bi-file-earmark-person"></i></span>
+                                            <div class="form-floating">
+                                                <input type="file" name="pdf" id="pdf" class="form-control" accept="application/pdf">
+                                                <div class="invalid-feedback">Você deve enviar o currículo em pdf</div>
+                                            </div>
+                                        </div>
+                                    </div>                        
+                                    <div class="col-6 col-md-4 d-flex align-items-center"><button class="btn btn-danger p-2" type="submit">Enviar</button></div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
+        <script>
+            // Exemplo de JavaScript inicial para desabilitar envios de formulários se houver campos inválidos
+            (() => {
+                'use strict'
+            
+                // Busque todos os formulários aos quais queremos aplicar estilos de validação personalizados do Bootstrap
+                const forms = document.querySelectorAll('.needs-validation')
+            
+                // Passe por cima deles e evite o envio
+                Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    }
+            
+                    form.classList.add('was-validated')
+                }, false)
+                })
+            })()
+        </script>
 {% endblock %}

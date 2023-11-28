@@ -12,13 +12,13 @@
                 </div>
 
                 <div class="form-floating mb-2">
-                    <textarea name="descricao" maxlength="355" minlength="3" class="form-control" style="height: 100px; resize:none;" required></textarea>
+                    <textarea name="descricao" minlength="3" class="form-control" style="height: 100px; resize:none;" required></textarea>
                     <label for="descricao">Descrição do cargo</label>
                     <div class="invalid-feedback">Você deve informar a descrição do cargo</div>
                 </div>
 
                 <div class="form-floating mb-2">
-                    <textarea name="requisitos" maxlength="355" minlength="3" class="form-control" style="height: 100px; resize:none;" required></textarea>
+                    <textarea name="requisitos" minlength="3" class="form-control" style="height: 100px; resize:none;" required></textarea>
                     <label for="requisitos">Requisitos para o cargo</label>
                     <div class="invalid-feedback">Você deve informar os requisitos para o cargo</div>
                 </div>
@@ -85,7 +85,7 @@
                                     <option value=""></option>
                                     <option value="presencial">Presencial</option>
                                     <option value="remoto">Remoto</option>
-                                    <option value="hibrido">Híbrido</option>
+                                    <option value="híbrido">Híbrido</option>
                                 </select>
                                 <label for="modalidade">Modalidade do cargo</label>
                                 <div class="invalid-feedback">Você deve informar a modalidade do cargo</div>
@@ -94,6 +94,11 @@
                     </div>
                 </div>
 
+                <div class="form-floating mb-2 d-flex justify-content-center">
+                    <input type="date" name="data" id="data" min="{{real_date}}" class="form-control" required autofocus />
+                    <label for="data">Data de expiração</label>
+                    <div class="invalid-feedback">Você deve informar a data de expiração</div>
+                </div>
                 <input type="submit" value="Cadastrar" class="mt-3 btn btn-lg btn-outline-danger justify-content-center" />
             </form>
         </div>

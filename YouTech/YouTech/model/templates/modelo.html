@@ -10,6 +10,35 @@
     <link rel="shortcut icon" href="../static/img/Web/beterraba-32.png" type="image/x-icon">
     <!---->
     <title>YouTech :: {{titulo}}</title>
+    <style>
+      *{
+        transition: all 0.5s;
+      }
+      a.hover{
+        color: #fff;
+      }
+      nav a.hover:hover{
+        color: #2A494D;
+        background-color: #fff;
+      }
+      .animation {
+        font-size: 40px;
+        animation: bounce 2s infinite;
+        padding-left: 5%;
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(5px);
+        }
+        60% {
+            transform: translateY(10px);
+        }
+    }
+    </style>
 </head>
 <body style="min-height: 100vh;" class="d-flex flex-column">
   <!--Navbar-->
@@ -23,13 +52,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center justify-content-center">
             <li class="nav-item">
-              <a class="nav-link active fs-5 text-light mx-5" aria-current="page" href="/home#sobre">Sobre nós</a>
+              <a class="nav-link fs-5 rounded mx-5 hover" aria-current="page" href="/home#sobre">Sobre nós</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-5 text-light me-5" aria-current="page" href="/home#porque">Por que nós?</a>
+              <a class="nav-link fs-5 rounded hover" aria-current="page" href="/home#porque">Por que nós?</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-5 text-light" aria-current="page" href="/home#vagas">Vagas</a>
+              <a class="nav-link fs-5 rounded mx-5 hover" aria-current="page" href="/home#vagas">Vagas</a>
             </li>
           </ul>
           {% block botao %}

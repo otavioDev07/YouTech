@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect
+from session.session import verifica_sessao
+import uuid, os
 from database.conexao import get_db_conexao, iniciar_db
 
 vaga_blueprint = Blueprint('vaga', __name__, template_folder='templates')
@@ -11,3 +13,28 @@ def ver_vaga(id):
         vaga = conexao.execute('SELECT * FROM vagas WHERE id = ?', (id,)).fetchall()
         conexao.close()
         return render_template('vaga.html', titulo=titulo, vaga=vaga)
+
+
+@vaga_blueprint.route('/pdf/<id>', methods=['post'])
+def salvar_pdf(id):
+        global cargo, caminho_curriculo
+        pdf = request.files['pdf']
+        if pdf:
+                if pdf.filename != '':
+                        iniciar_db()
+                        conexao = get_db_conexao()
+                        cargo = conexao.execute('SELECT cargo FROM vagas WHERE id = ?', (id,)).fetchone()
+                        cargo = cargo['cargo']
+                        id_pdf = str(uuid.uuid4().hex)
+                        name_pdf = f"{id_pdf}_{cargo}.pdf"
+                        caminho_curriculo = os.path.join('YouTech\static\pdf/', cargo)
+                        if os.path.exists(caminho_curriculo):
+                                pdf.save(caminho_curriculo + '/' + name_pdf)
+                        return redirect('/ver_vaga/<id>')
+                else:
+                        return redirect('/ver_vaga/<id>')
+
+
+        
+
+
