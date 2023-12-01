@@ -38,7 +38,7 @@
 
       <!--Quem somos-->
         <div id="sobre" style="background-color: #00FCA8" class="container-fluid p-5 w-100">
-            <div class="container w-75 p-auto d-flex flex-column align-items-center">
+            <div class="container p-auto d-flex flex-column align-items-center">
                 <h1 class="w-100 text-start">Sobre Nós</h1>
                 <hr class="w-100">
                 <p style="white-space: pre-wrap;" class="w-75">
@@ -53,7 +53,7 @@
 
         <!--Por que trabalhar conosco?-->
         <div id="porque" style="width: 100%; padding: 0; margin: 0;" class="container-fluid w-100 row">
-            <div style="background-color: #2A494D;" class="col-12 col-xl-5 text-light p-2">
+            <div style="background-color: #2A494D;" class="col-12 col-xl-5 text-light p-4">
                 <h1>Por Que Trabalhar Conosco?</h1> <hr>
                 <p style="white-space: pre-wrap;">
   Oferecemos um ambiente de trabalho flexível, permitindo modalidades presenciais, híbridas ou remotas para melhor equilibrar vida pessoal e profissional. Valorizamos nossos colaboradores, oferecendo benefícios abrangentes como vale refeição e transporte, assistência médica de qualidade, e programas de apoio ao empregado, garantindo um ambiente saudável e de desenvolvimento contínuo. <br>
@@ -68,7 +68,7 @@
         <!--Vagas disponíveis-->
             <div id="vagas" class="container-fluid w-100 py-3">
                 <form class="d-flex" action="/filtro" method="post" role="search">
-                    <div class="row w-50">
+                    <div class="row">
                         <div class="col-12 col-md-5">
                             <div class="input-group mb-2">
                                 <div class="form-floating">
@@ -107,13 +107,13 @@
                 <p>Por favor, retorne mais tarde.</p>
             </div>
             {% else %}
-            <div class="text-center">
+            <div class="text-center d-flex flex-column align-items-center">
                 <h1>Vagas Disponíveis</h1>
                 <div class="container w-75 row g-4 d-flex justify-content-center">
                     {% for vaga in validos %}
                             <div class="col col-12 col-md-6 col-xl-3">
                                 <div class="card">
-                                    <img src="../../static/img/img_vagas/{{vaga['img']}}" class="card-img-top" alt="{{vaga['cargo']}}">
+                                    <figure style="height: 300px; display: flex; align-items: center; overflow:hidden;"><img src="../../static/img/img_vagas/{{vaga['img']}}" class="card-img-top" alt="{{vaga['cargo']}}"></figure>
                                     <div class="card-body">
                                         <h5 class="card-title">{{vaga['cargo']}}</h5>
                                         <a href="/ver_vaga/{{vaga['id']}}">
@@ -128,5 +128,4 @@
             {% endif %}
         </div>
     </div>
-    
 {% endblock %}

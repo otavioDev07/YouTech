@@ -35,7 +35,6 @@ def index():
     #Compreensão de lista para evitar o uso da função zip no template
     #A função zip vai agrupar esses elementos em tuplas onde o primeiro elemento é a vaga e o segundo é a validade dela. O loop 'for vaga, valido in' descompacta essa tupla nas variáveis vaga e valido. 'if valido' filtra as tuplas onde só há valido=TRUE. 'Vaga' é a variável final que será adicionada na lista válidos.
     validos = [vaga for vaga, valido in zip(vagas, validos) if valido]
-
     return render_template('index.html', titulo=titulo, login=login, validos=validos)
 
 

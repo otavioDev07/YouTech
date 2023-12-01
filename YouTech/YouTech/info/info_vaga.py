@@ -8,11 +8,15 @@ vaga_blueprint = Blueprint('vaga', __name__, template_folder='templates')
 @vaga_blueprint.route('/ver_vaga/<id>')
 def ver_vaga(id):
         titulo = 'DESCRIÇÃO DA VAGA'
+        if verifica_sessao():
+                login = True
+        else:
+                login = False
         iniciar_db()
         conexao = get_db_conexao()
         vaga = conexao.execute('SELECT * FROM vagas WHERE id = ?', (id,)).fetchall()
         conexao.close()
-        return render_template('vaga.html', titulo=titulo, vaga=vaga)
+        return render_template('vaga.html', titulo=titulo, vaga=vaga, login=login)
 
 
 @vaga_blueprint.route('/pdf/<id>', methods=['post'])
@@ -30,9 +34,9 @@ def salvar_pdf(id):
                         caminho_curriculo = os.path.join('YouTech\static\pdf/', cargo)
                         if os.path.exists(caminho_curriculo):
                                 pdf.save(caminho_curriculo + '/' + name_pdf)
-                        return redirect('/ver_vaga/<id>')
+                        return redirect('/')
                 else:
-                        return redirect('/ver_vaga/<id>')
+                        return redirect('/')
 
 
         

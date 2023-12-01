@@ -8,27 +8,27 @@
 
 <!--CONTEÚDO DO SITE-->
 {% block conteudo %}
-        <div class="d-flex flex-column align-items-center w-75 mt-5">
+        <div class="d-flex flex-column row align-items-center w-75 mt-5">
             {% for info in vaga %}
-                <div class="w-75 rounded">
-                    <div style="background-color: #00FCA8" class="container-fluid p-1">
+                <div class="col-12 col-lg-9 rounded">
+                    <div style="background-color: #00F5FF" class="container-fluid p-1">
                         <h1 class="text-center">{{info['cargo']}}</h1>
                     </div>
                     <div class="container w-75">
-                        <div class="d-flex align-items-center justify-content-between p-1">
-                            <div class="d-flex">
+                        <div class="d-flex row align-items-center justify-content-between p-1">
+                            <div class="d-flex col-12 col-md-6 col-xl-3">
                                 <i class="bi bi-person-workspace pe-2"></i>
                                 <span>{{ info['modalidade'] }}</span>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex col-12 col-md-6 col-xl-3">
                                 <i class="bi bi-currency-exchange pe-2"></i>
                                 <span>R$ {{ info['salario'] }}</span>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex col-12 col-md-6 col-xl-3">
                                 <i class="bi bi-flag-fill pe-2"></i>
                                 <span>{{ info['local'] }}</span>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex col-12 col-md-6 col-xl-3">
                                 <i class="bi bi-person-badge pe-2"></i>
                                 <span>{{ info['setor'] }}</span>
                             </div>
@@ -45,7 +45,7 @@
                             </div>
                             <div class="d-flex align-items-baseline">
                                 <h6 style="white-space: pre-wrap;"><strong>Salário:</strong> </h6>
-                                <p>{{info['salario']}}</p>
+                                <p>R$ {{info['salario']}}</p>
                             </div>
                             <div class="d-flex align-items-baseline">
                                 <h6 style="white-space: pre-wrap;"><strong>Modalidade:</strong> </h6>
@@ -64,6 +64,7 @@
                                 <p>{{info['email']}}</p>
                             </div>
 
+                            {% if not login %}
                             <form class="d-flex needs-validation" enctype="multipart/form-data" action="/pdf/{{info['id']}}" method="post" role="search" novalidate>
                                 <div class="row w-100">
                                     <div class="col-12 col-md-8">
@@ -78,6 +79,7 @@
                                     <div class="col-6 col-md-4 d-flex align-items-center"><button class="btn btn-danger p-2" type="submit">Enviar</button></div>
                                 </div>
                             </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

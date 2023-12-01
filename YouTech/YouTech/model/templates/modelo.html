@@ -8,11 +8,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../static/css/style.css">
     <link rel="shortcut icon" href="../static/img/Web/beterraba-32.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Varela+Round&display=swap" rel="stylesheet">
     <!---->
     <title>YouTech :: {{titulo}}</title>
     <style>
       *{
         transition: all 0.5s;
+        font-family: "Open Sans", sans-serif
+      }
+      * h1,h2,h3,h4{
+        font-family: 'Varela Round', monospace
       }
       a.hover{
         color: #fff;
@@ -25,6 +32,31 @@
         font-size: 40px;
         animation: bounce 2s infinite;
         padding-left: 5%;
+    }
+
+    @media screen and (min-width: 1200px){
+      #vagas form .row{
+        width: 50%;
+      }
+    }
+
+    @media screen and (min-width: 992px){
+      #sobre .container{
+        width: 75%;
+      }
+    }
+
+    @media screen and (min-width: 576px){
+      nav button.btn-light{
+        text-align: center;
+        margin-bottom: 1%;
+      }
+      #sobre .container{
+        width: 100%;
+      }
+      #vagas form .row{
+        width: 100%;
+      }
     }
     
     @keyframes bounce {

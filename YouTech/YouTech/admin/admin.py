@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, redirect, session
+from flask import render_template, Blueprint, request, redirect, session, send_from_directory, current_app as app
 from session.session import verifica_sessao
 from database.conexao import iniciar_db, get_db_conexao 
 import uuid, os
@@ -34,10 +34,26 @@ def adm():
         vagas = conexao.execute('SELECT * FROM vagas ORDER BY id DESC').fetchall()
         conexao.close()
         titulo = 'ADMINISTRAÇÂO'
-        return render_template('adm.html', vagas=vagas, titulo=titulo)
+
+        hoje = date.today()
+        invalidos = []  # Lista para armazenar a invalidade de cada vaga
+
+        for row in vagas:
+            data = row['data']
+            year, month, day = map(int, data.split('-'))
+            real_date = date(year, month, day)
+
+            # Verifica se a data da vaga é anterior à data atual
+            invalido = hoje > real_date
+            invalidos.append(invalido)
+
+            #Compreensão de lista para evitar o uso da função zip no template
+            #A função zip vai agrupar esses elementos em tuplas onde o primeiro elemento é a vaga e o segundo é a validade dela. O loop 'for vaga, valido in' descompacta essa tupla nas variáveis vaga e valido. 'if valido' filtra as tuplas onde só há valido=TRUE. 'Vaga' é a variável final que será adicionada na lista válidos.
+            invalidos = [vaga for vaga, validade in zip(vagas, invalidos) if validade]
+        return render_template('adm.html', vagas=vagas, titulo=titulo, invalidos=invalidos)
     else:
         return redirect('/login')
-    
+        
 #Rota para renderizar página de cadastro
 @admin_blueprint.route('/cadvagas')
 def cadvagas():
@@ -149,7 +165,6 @@ def editar():
             if os.path.exists(caminho_imagem_antiga):
                 os.remove(caminho_imagem_antiga)
             img.save(caminho_imagem)
-        # else talvez ?
                 
     else:
         filename = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()['img'] # Se nenhuma nova imagem for enviada, mantém a imagem existente
@@ -157,15 +172,40 @@ def editar():
     conexao.commit()
     conexao.close()
     return redirect('/adm')
-    
+
+#Rota para ver os pdfs
+@admin_blueprint.route('/ver_pdf/<id>')
+def ver_pdf(id):
+    iniciar_db()
+    conexao = get_db_conexao()
+    nome_vaga = conexao.execute('SELECT cargo FROM vagas WHERE id = ?', (id,)).fetchone()[0]
+    id = conexao.execute('SELECT id FROM vagas WHERE id = ?', (id,)).fetchone()[0]
+    pdf_files = [f for f in os.listdir(os.path.join('YouTech', 'static', 'pdf', nome_vaga))]
+    return render_template('curriculos.html', pdf_files=pdf_files, nome_vaga=nome_vaga, id=id)
+
+# #Rota para abrir o pdf
+# @admin_blueprint.route('/abrir_pdf/<nome_vaga>/<pdf>')
+# def abrir_pdf(nome_vaga, pdf):
+    # UPLOAD_FOLDER = f'YouTech\static\pdf\{nome_vaga}'    
+    # ALLOWED_EXTENSIONS = {'pdf'}
+    # app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    # app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
+    # return send_from_directory(app.config['UPLOAD_FOLDER'], pdf)
+
+@admin_blueprint.route('/excluir_pdf/<id>/<nome_vaga>/<pdf>')
+def excluir_pdf(id, nome_vaga, pdf):
+    caminho = os.path.join('Youtech', 'static', 'pdf', nome_vaga, pdf )
+    if os.path.exists(caminho):
+        os.remove(caminho)
+    return redirect(f'/ver_pdf/{id}')
 #Rota de busca
 @admin_blueprint.route('/busca', methods=['post'])
 def busca():
     busca = request.form['buscar']
     conexao = get_db_conexao()
-    vagas = conexao.execute('SELECT * FROM vagas WHERE cargo LIKE "%" || ? || "%"', (busca,)).fetchall()
+    validos = conexao.execute('SELECT * FROM vagas WHERE cargo LIKE "%" || ? || "%"', (busca,)).fetchall()
     title = 'YOUTECH'
-    return render_template('index.html', title=title, vagas=vagas)
+    return render_template('index.html', title=title, validos=validos)
 
 
 
