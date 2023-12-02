@@ -183,15 +183,6 @@ def ver_pdf(id):
     pdf_files = [f for f in os.listdir(os.path.join('YouTech', 'static', 'pdf', nome_vaga))]
     return render_template('curriculos.html', pdf_files=pdf_files, nome_vaga=nome_vaga, id=id)
 
-# #Rota para abrir o pdf
-# @admin_blueprint.route('/abrir_pdf/<nome_vaga>/<pdf>')
-# def abrir_pdf(nome_vaga, pdf):
-    # UPLOAD_FOLDER = f'YouTech\static\pdf\{nome_vaga}'    
-    # ALLOWED_EXTENSIONS = {'pdf'}
-    # app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    # app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
-    # return send_from_directory(app.config['UPLOAD_FOLDER'], pdf)
-
 @admin_blueprint.route('/excluir_pdf/<id>/<nome_vaga>/<pdf>')
 def excluir_pdf(id, nome_vaga, pdf):
     caminho = os.path.join('Youtech', 'static', 'pdf', nome_vaga, pdf )
