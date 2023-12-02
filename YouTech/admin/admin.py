@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, redirect, session, send_from_directory, current_app as app
+from flask import render_template, Blueprint, request, redirect, session
 from session.session import verifica_sessao
 from database.conexao import iniciar_db, get_db_conexao 
 import uuid, os
