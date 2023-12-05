@@ -9,12 +9,12 @@
         {% if not vagas %}
             <h1 style="color: #2A494D" class="text-center my-5">Não há vagas abertas no momento</h1>
         {% else %}
-            <div class="container-fluid text-center">
+            <div class="container-fluid text-center w-100">
                 <div class="row d-flex justify-content-center g-2">
                     {% for vaga in vagas %}
-                    <div class="col-10 col-xl-4 mx-auto">
+                    <div class="col-10 col-xl-4 mx-auto d-flex flex-column align-items-center">
 
-                        <div class="card mb-3" style="max-width: 800px; min-width: 400px;">
+                        <div class="card mb-3" style="max-width: 745px; min-width: 400px;">
                             <div class="row g-0">
                                 <div class="col-md-5">
                                 <img src="../../static/img/img_vagas/{{vaga['img']}}" class="img-fluid d-flex justify-content-center rounded-start h-100" alt="{{vaga['cargo']}}">
@@ -44,8 +44,8 @@
                 </div>
             {% endif %}
             <div class="container text-center">
-                <button type="button" onclick="window.location.href='/cadvagas'" style="background-color: #2A494D;" class="btn btn-lg text-light mx-5">Cadastrar</button>
-                <button type="button" onclick="window.location.href='/logoff'" class="btn btn-lg btn-danger mx-5">Sair</button>
+                <button type="button" onclick="window.location.href='/cadvagas'" style="background-color: #2A494D;" class="btn btn-lg text-light mx-5 my-1">Cadastrar</button>
+                <button type="button" onclick="window.location.href='/logoff'" class="btn btn-lg btn-danger mx-5 my-1">Sair</button>
             </div>
         </div>
     </div>
