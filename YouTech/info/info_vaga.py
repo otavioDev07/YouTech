@@ -34,6 +34,7 @@ def salvar_pdf(id):
                         caminho_curriculo = os.path.join('YouTech\static\pdf/', cargo)
                         if os.path.exists(caminho_curriculo):
                                 pdf.save(caminho_curriculo + '/' + name_pdf)
+                        conexao.execute('INSERT INTO curriculos (id_vaga, nome_vaga) VALUES (?, ?)', (id, cargo,))
                         return redirect('/')
                 else:
                         return redirect('/')

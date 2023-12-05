@@ -15,7 +15,7 @@
                         <ul>
                             {% for pdf in pdf_files%}
                                 <li class="d-flex justify-content-between mx-1">
-                                    <a target="_blank" href="{{url_for('admin.abrir_pdf', nome_vaga = nome_vaga, pdf = pdf, id = id)}}"><p>{{pdf}}</p></a>
+                                    <a target="_blank" href="../../static/pdf/{{nome_vaga}}/{{pdf}}"><p>{{pdf}}</p></a>
                                     <a href="/excluir_pdf/{{id}}/{{nome_vaga}}/{{pdf}}" onclick="return confirm('Você tem certeza de que deseja apagar esse currículo?')"><i class="bi bi-trash3"></i></a>
                                 </li>
                             {% endfor %}
