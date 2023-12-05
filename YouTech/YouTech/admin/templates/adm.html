@@ -34,7 +34,7 @@
                                     {% endif %} -->
                                     <a href="/chamar_edit/{{vaga['id']}}"><i class="bi bi-pencil-square fs-3"></i></a>
                                     <a href="/ver_pdf/{{vaga['id']}}"><i class="bi bi-file-earmark-person mx-5 fs-3"></i></a>
-                                    <a href="/excluir/{{vaga['id']}}" onclick="return confirm('Você tem certeza de que deseja remover essa vaga?')"><i class="bi bi-trash3 fs-3"></i></a>
+                                    <a href="/excluir/{{vaga['id']}}/{{vaga['cargo']}}" onclick="return confirm('Você tem certeza de que deseja remover essa vaga?')"><i class="bi bi-trash3 fs-3"></i></a>
                                 </div>
                                 </div>
                             </div>

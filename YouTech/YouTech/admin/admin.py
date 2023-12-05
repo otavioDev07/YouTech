@@ -4,6 +4,7 @@ from database.conexao import iniciar_db, get_db_conexao
 import uuid, os
 from session.session import usuario, senha
 from datetime import date
+from shutil import rmtree
 
 admin_blueprint = Blueprint('admin', __name__, template_folder='templates')
 
@@ -80,7 +81,7 @@ def cadastro():
         if img:
             id_img = str(uuid.uuid4().hex)
             filename = f"{id_img}_{cargo}.png"
-            img.save('mysite/static/img/img_vagas/'+filename)
+            img.save('YouTech/static/img/img_vagas/'+filename)
             iniciar_db()
             conexao = get_db_conexao()
             conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, data,))
@@ -95,7 +96,7 @@ def cadastro():
             conexao.close()
 
         #Criação da pasta dos curriculos
-        caminho_curriculo = os.path.join('mysite/static/pdf/', cargo)
+        caminho_curriculo = os.path.join('YouTech/static/pdf/', cargo)
         if not os.path.exists(caminho_curriculo):
             os.makedirs(caminho_curriculo)
 
@@ -104,8 +105,8 @@ def cadastro():
         return redirect('/login')
 
 #Rota para excluir
-@admin_blueprint.route('/excluir/<id>')
-def excluir(id):
+@admin_blueprint.route('/excluir/<id>/<cargo>')
+def excluir(id, cargo):
     if verifica_sessao():
         id = int(id)
         iniciar_db()
@@ -113,7 +114,7 @@ def excluir(id):
         try:
             imagem = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()
             if imagem['img'] != "padrao.png":
-                caminho_imagem = os.path.join('mysite/static/img/img_vagas/', imagem['img'])
+                caminho_imagem = os.path.join('YouTech/static/img/img_vagas/', imagem['img'])
                 os.remove(caminho_imagem)
             conexao.execute('DELETE FROM vagas WHERE id = ?', (id,))
         except:
@@ -121,6 +122,10 @@ def excluir(id):
         finally:
             conexao.commit()
             conexao.close()
+
+        caminho = os.path.join('YouTech/static/pdf/', cargo)
+        if os.path.exists(caminho):
+            rmtree(caminho)
         return redirect('/adm')
     else:
         return redirect('/login')
@@ -158,10 +163,10 @@ def editar():
     if img:
         id_img = str(uuid.uuid4().hex)
         filename = f"{id_img}_{cargo}.png"
-        caminho_imagem = os.path.join('mysite/static/img/img_vagas/', filename)
+        caminho_imagem = os.path.join('YouTech/static/img/img_vagas/', filename)
         imagem_antiga = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone() # Remove a imagem antiga, se existir
         if imagem_antiga['img'] != 'padrao.png':
-            caminho_imagem_antiga = os.path.join('mysite/static/img/img_vagas/', imagem_antiga['img'])
+            caminho_imagem_antiga = os.path.join('YouTech/static/img/img_vagas/', imagem_antiga['img'])
             if os.path.exists(caminho_imagem_antiga):
                 os.remove(caminho_imagem_antiga)
             img.save(caminho_imagem)
@@ -180,12 +185,12 @@ def ver_pdf(id):
     conexao = get_db_conexao()
     nome_vaga = conexao.execute('SELECT cargo FROM vagas WHERE id = ?', (id,)).fetchone()[0]
     id = conexao.execute('SELECT id FROM vagas WHERE id = ?', (id,)).fetchone()[0]
-    pdf_files = [f for f in os.listdir(os.path.join('mysite', 'static', 'pdf', nome_vaga))]
+    pdf_files = [f for f in os.listdir(os.path.join('YouTech', 'static', 'pdf', nome_vaga))]
     return render_template('curriculos.html', pdf_files=pdf_files, nome_vaga=nome_vaga, id=id)
 
 @admin_blueprint.route('/excluir_pdf/<id>/<nome_vaga>/<pdf>')
 def excluir_pdf(id, nome_vaga, pdf):
-    caminho = os.path.join('static', 'pdf', nome_vaga, pdf )
+    caminho = os.path.join('YouTech', 'static', 'pdf', nome_vaga, pdf )
     if os.path.exists(caminho):
         os.remove(caminho)
     return redirect(f'/ver_pdf/{id}')
