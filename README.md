@@ -1,4 +1,4 @@
-# Projeto Integrador: CRUD Básico em Programação Web
+# Projeto Integrador: CRUD em Programação Web
 
 
 ## Descrição
