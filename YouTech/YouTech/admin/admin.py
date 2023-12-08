@@ -67,7 +67,7 @@ def cadvagas():
 @admin_blueprint.route('/cadastro', methods=['post'])
 def cadastro():
     if verifica_sessao():
-        cargo = request.form['cargo']
+        cargo1 = request.form['cargo']
         descricao = request.form['descricao']
         requisitos = request.form['requisitos']
         img = request.files['img']
@@ -80,23 +80,23 @@ def cadastro():
 
         if img:
             id_img = str(uuid.uuid4().hex)
-            filename = f"{id_img}_{cargo}.png"
+            filename = f"{id_img}_{cargo1}.png"
             img.save('YouTech/static/img/img_vagas/'+filename)
             iniciar_db()
             conexao = get_db_conexao()
-            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, data,))
+            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo1, descricao, requisitos, filename, modalidade, local, salario, email, setor, data,))
             conexao.commit()
             conexao.close()
         else:
             filename = "padrao.png"
             iniciar_db()
             conexao = get_db_conexao()
-            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, data,))
+            conexao.execute('INSERT INTO vagas (cargo, descricao, requisitos, img, modalidade, local, salario, email, setor, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (cargo1, descricao, requisitos, filename, modalidade, local, salario, email, setor, data,))
             conexao.commit()
             conexao.close()
 
         #Criação da pasta dos curriculos
-        caminho_curriculo = os.path.join('YouTech/static/pdf/', cargo)
+        caminho_curriculo = os.path.join('YouTech/static/pdf/', cargo1)
         if not os.path.exists(caminho_curriculo):
             os.makedirs(caminho_curriculo)
 
@@ -147,7 +147,7 @@ def chamar_edit(id):
 @admin_blueprint.route('/edit_vagas', methods=['POST'])
 def editar():
     id = request.form['id']
-    cargo = request.form['cargo']
+    cargo2 = request.form['cargo']
     descricao = request.form['descricao']
     requisitos = request.form['requisitos']
     img = request.files['img']
@@ -160,9 +160,14 @@ def editar():
     data = request.form['data']
 
     conexao = get_db_conexao()
+    #Renomeia o caminho do diretório de PDFs
+    cargo1 = conexao.execute('SELECT cargo FROM vagas WHERE id = ?', (id,)).fetchone()[0]
+    caminho_antigo = os.path.join('YouTech/static/pdf/', cargo1)
+    novo_caminho =  os.path.join('YouTech/static/pdf/', cargo2)
+    os.rename(caminho_antigo, novo_caminho)
     if img:
         id_img = str(uuid.uuid4().hex)
-        filename = f"{id_img}_{cargo}.png"
+        filename = f"{id_img}_{cargo2}.png"
         caminho_imagem = os.path.join('YouTech/static/img/img_vagas/', filename)
         imagem_antiga = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone() # Remove a imagem antiga, se existir
         if imagem_antiga['img'] != 'padrao.png':
@@ -170,10 +175,9 @@ def editar():
             if os.path.exists(caminho_imagem_antiga):
                 os.remove(caminho_imagem_antiga)
             img.save(caminho_imagem)
-
     else:
         filename = conexao.execute('SELECT img FROM vagas WHERE id = ?', (id,)).fetchone()['img'] # Se nenhuma nova imagem for enviada, mantém a imagem existente
-    conexao.execute('UPDATE vagas SET cargo = ?, descricao = ?, requisitos = ?, img = ?, modalidade = ?, local = ?, salario = ?, email = ?, setor = ?, data = ? WHERE id = ?', (cargo, descricao, requisitos, filename, modalidade, local, salario, email, setor, data, id,))
+    conexao.execute('UPDATE vagas SET cargo = ?, descricao = ?, requisitos = ?, img = ?, modalidade = ?, local = ?, salario = ?, email = ?, setor = ?, data = ? WHERE id = ?', (cargo2, descricao, requisitos, filename, modalidade, local, salario, email, setor, data, id,))
     conexao.commit()
     conexao.close()
     return redirect('/adm')
